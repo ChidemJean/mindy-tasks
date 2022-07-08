@@ -1,0 +1,4 @@
+{
+    "appId": "com.jc.mindytasks",
+    "files": [".webpack/main/bundle.js", ".webpack/renderer/**/*"]
+}
