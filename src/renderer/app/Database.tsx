@@ -1,6 +1,5 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
-import { remote } from 'electron';
 
 export const Application: React.FC<{}> = () => {
     // const database: Database = remote.getGlobal('database');
