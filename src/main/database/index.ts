@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm";
 import path from 'path';
 import { app } from "electron";
+import { UserSchema } from "./models/user.entity";
+import { TaskSchema } from "./models/task.entity";
 
 export const defaultStorageFolder = app.getPath('downloads');
 
@@ -11,7 +13,7 @@ const AppDataSource = new DataSource({
     logger: "simple-console",
     database: path.join(defaultStorageFolder, 'doc_app.sqlite'),
     entities: [
-        path.join(__dirname, "entity", "*.ts")
+        TaskSchema, UserSchema
     ]
 });
 

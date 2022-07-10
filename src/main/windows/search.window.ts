@@ -13,7 +13,7 @@ export default function createSearchWindow() {
       height: height * .312,
       transparent: true,
       frame: false,
-      skipTaskbar: true,
+      // skipTaskbar: true,
       maximizable: false,
       hasShadow: false,
       webPreferences: {
@@ -23,20 +23,28 @@ export default function createSearchWindow() {
       },
    });
 
+   // const { getCursorScreenPoint, getDisplayNearestPoint } = screen
+
+   // const currentScreen = getDisplayNearestPoint(getCursorScreenPoint())
+   // _searchWin.setBounds(currentScreen.workArea)
+
    if (process.platform === 'darwin') {
       app.dock.hide();
    }
 
-   // searchWin.on("blur", (e: any) => {
-   //     searchWin.close();
-   //     searchWin = null;
-   // });
+   _searchWin.on("blur", (e: any) => {
+      // _searchWin.close();
+      // setSearchWin(null);
+   });
 
    _searchWin.webContents.on('before-input-event', (event, input) => {
       if (input.key.toLowerCase() === 'escape') {
          _searchWin.close();
-         setSearchWin(null);
       }
+   });
+
+   _searchWin.on('closed', function(){
+      setSearchWin(null);
    });
 
    // Turns off the application menu.

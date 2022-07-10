@@ -4,9 +4,10 @@ import url from 'url';
 import 'reflect-metadata'; // Required by TypoORM.
 import { UsersController } from './controllers/user.controller';
 
-import createTray from './windows/main.windows';
-import createSearchWindow from './windows/search.windows';
-import createWindow from './windows/app.windows';
+import createTray from './windows/main.window';
+import createSearchWindow from './windows/search.window';
+import createWindow from './windows/app.window';
+import { TasksController } from './controllers/task.controller';
 
 export const isDev: boolean = !app.isPackaged;
 
@@ -19,7 +20,8 @@ export const setSearchWin = (win: BrowserWindow) => searchWin = win;
 export const setTray = (_tray: Tray) => tray = _tray;
 
 async function registerListeners () {
-    UsersController(ipcMain);
+    UsersController();
+    TasksController();
 }
 
 function initApp() {
@@ -29,7 +31,10 @@ function initApp() {
 
     globalShortcut.register('CommandOrControl+Q', () => {
         console.log(searchWin != null);
-        if (searchWin != null) return;
+        if (searchWin != null) {
+            searchWin.focus();
+            return;
+        }
         createSearchWindow();
     });
 }

@@ -2,7 +2,7 @@ import { BrowserWindow, Menu, screen, Tray, nativeImage, app } from "electron";
 import { join } from "path";
 import { setTray } from "..";
 import { initDBConnection } from "../database";
-import createWindow from "./app.windows";
+import createWindow from "./app.window";
 
 export default function createTray () {
 
@@ -17,6 +17,12 @@ export default function createTray () {
                createWindow();
            }
        },
+       {
+            label: 'Show App 2',
+            click: () => {
+                createWindow();
+            }
+        },
        {
            label: 'Quit',
            click: () => {

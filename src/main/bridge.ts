@@ -13,8 +13,8 @@ export const api = {
 		ipcRenderer.send('message', message)
 	},
 
-	execute: (what: string) => {
-		return ipcRenderer.invoke(what);
+	execute: (what: string, ...args: any[]) => {
+		return ipcRenderer.invoke(what, args);
 	},
 
 	/**
@@ -25,4 +25,4 @@ export const api = {
 	}
 }
 
-contextBridge.exposeInMainWorld('Main', api)
+contextBridge.exposeInMainWorld('electron', api)
