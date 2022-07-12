@@ -1,13 +1,22 @@
 import { Entity, EntityProps } from './base.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { User } from './user.entity';
+import { Group } from './group.entity';
+import { Project } from './project.entity';
+import { TaskLabel } from './task-label.entity';
 
 export type TaskProps = EntityProps & {
 	title: string;
 	text: string;
 	createdAt?: Date;
+	updatedAt?: Date;
 	deadline?: Date;
 	note?: boolean;
-	user?: string;
+	done?: boolean;
+	user?: User;
+	group?: Group;
+	project?: Project;
+	labels?: TaskLabel[]
 };
 
 export class Task extends Entity {
@@ -41,5 +50,5 @@ export class Task extends Entity {
 	set note(value: boolean) { this.getProps().note = value; }
 
 	get user() { return this.getProps().user; }
-	set user(value: string) { this.getProps().user = value; }
+	set user(value: User) { this.getProps().user = value; }
 }

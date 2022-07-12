@@ -27,6 +27,7 @@ export default function createSearchWindow() {
 
    // const currentScreen = getDisplayNearestPoint(getCursorScreenPoint())
    // _searchWin.setBounds(currentScreen.workArea)
+   _searchWin.webContents.openDevTools();
 
    if (process.platform === 'darwin') {
       app.dock.hide();

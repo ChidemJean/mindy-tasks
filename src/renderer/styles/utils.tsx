@@ -40,3 +40,23 @@ export const { styled, css } = createStitches({
 		}),
 	},
 });
+
+import { createTailwindConfig } from "@stitches/tailwind";
+import * as utils from "@stitches/tailwind/utils";
+import * as theme from "@stitches/tailwind/theme";
+
+const config = createTailwindConfig({
+  screens: {
+    tablet: (cssRule: any) => `@media (min-width: 768px) { ${cssRule} }`,
+    laptop: (cssRule: any) => `@media (min-width: 1024px) { ${cssRule} }`,
+  },
+  theme: {
+    ...theme,
+    container: {
+      center: false,
+    },
+  },
+  utils: utils,
+});
+
+export const tailwind = createStitches(config);

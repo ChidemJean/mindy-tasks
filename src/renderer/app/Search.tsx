@@ -1,5 +1,5 @@
 import { hot } from 'react-hot-loader/root';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ContextMenuSearch } from '../components/ContextMenu';
 import { blackA } from '@radix-ui/colors';
 import { createStitches, globalCss } from '@stitches/react';
@@ -8,6 +8,9 @@ import * as ContextMenuPrimitive from '@radix-ui/react-context-menu';
 import { styled } from '../styles/utils';
 import { ResultsBox } from '../components/SearchResultsBox';
 import { ResultBox } from '../components/ResultBox';
+import { api } from '../../main/bridge';
+import { apiCreateTask, apiGetUsers, apiSearchTasks } from '../api';
+import _ from 'lodash';
 
 const Flex = styled('div', {
 	position: 'relative',
@@ -53,41 +56,55 @@ export const Search: React.FC<{}> = () => {
 
 	const [isOpen, SetIsOpen] = useState(false);
 	const [message, setMessage] = useState("");
+	const [tasks, setTasks] = useState([]);
+
+	const debounceFn = useCallback(
+		_.debounce(async (value) => {
+			let tasks = await apiSearchTasks({ user: "d024a9b0-70e3-4755-ba10-acc4492eed39", term: value});
+			setTasks(tasks);
+			console.log(tasks);
+		}, 300), 
+	[]);
 
 	const inputRef: any = useRef(null);
 	const focus = () => { inputRef.current && inputRef.current.focus() }
 
 	const getUsers = async () => {
-		const user = await window.electron.execute("get/users");
-		console.log(user);
-	}
-
-	const saveTask = async (data: any) => {
-		const res = await window.electron.execute("create/task", data);
-		console.log(res);
+		const users = await apiGetUsers();
+		console.log(users);
 	}
 
 	useEffect(() => {
 		focus();
 	}, []);
 
-	const checkInputEvent = (e: any) => {
+	const checkInputEvent = async (e: any) => {
 		let value: string = e.target.value;
 		setMessage(value);
 		SetIsOpen(value.length > 0);
 
 		if (e.key === "Enter") {
 			let createUserCMd = "create:task";
-			let where = value.indexOf(createUserCMd);
-			if (where !== -1) {
-				saveTask({
-					user: "d024a9b0-70e3-4755-ba10-acc4492eed39",
-					title: value.substring(createUserCMd.length, value.length).trim(),
-					text: 'teste texto'
-				});
+			let hasCmd = value.substring(0, createUserCMd.length) == createUserCMd;
+			
+			if (hasCmd) {
+				const cmdContent = value.substring(createUserCMd.length, value.length)?.trim();
+				if (cmdContent) {
+					await apiCreateTask({
+						user: "d024a9b0-70e3-4755-ba10-acc4492eed39",
+						title: value.substring(createUserCMd.length, value.length).trim(),
+						text: 'teste texto'
+					});
+				} else {
+					alert("corpo do comando vazio!");
+				}
 				inputRef.current.value = "";
 			}
+
+			return;
 		}
+
+		debounceFn(value);
 	}
 
 	return (
@@ -96,9 +113,9 @@ export const Search: React.FC<{}> = () => {
 				<IconGlass css={{ userSelect: 'none', drag: true }} onClick={(e) => getUsers()} />
 				<Input ref={inputRef} type="text" id="firstName" placeholder="Pesquise uma nota ou tarefa..." onKeyUp={checkInputEvent} />
 			</Flex>
-			<ResultsBox open={isOpen} css={{ mt: '1rem', backgroundColor: message == 'vermelho' ? 'red' : 'blue' }}>
-				{([1,2,3,4,5].map(v => (
-					<ResultBox noteData={{ title: 'Teste nota' + v, text: 'Lorem' }}/>
+			<ResultsBox open={isOpen} css={{ mt: '1rem' }}>
+				{(tasks.map(v => (
+					<ResultBox key={v.id} noteData={{ ...v } as any}/>
 				)))}
 			</ResultsBox>
 		</Flex>

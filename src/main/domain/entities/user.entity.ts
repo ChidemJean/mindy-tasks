@@ -1,13 +1,15 @@
 import { Entity, EntityProps } from './base.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { Team } from './team.entity';
 
 export type UserProps = EntityProps & {
-	name: string;
-	email: string;
+	name?: string;
+	email?: string;
 	birthDate?: Date;
 	gender?: string;
 	state?: string;
 	city?: string;
+	team?: Team;
 };
 
 export class User extends Entity {

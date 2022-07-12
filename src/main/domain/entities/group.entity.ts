@@ -1,22 +1,23 @@
 import { Entity, EntityProps } from './base.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { Task } from './task.entity';
 
-export type TaskLabelProps = EntityProps & {
+export type GroupProps = EntityProps & {
 	name: string;
 	description: string;
 	createdAt?: Date;
 	updatedAt?: Date;
-   color?: string;
+   tasks?: Task[];
 };
 
-export class TaskLabel extends Entity {
+export class Group extends Entity {
 	public readonly id: string;
 
-	private constructor(props: TaskLabelProps, id?: string) {
+	private constructor(props: GroupProps, id?: string) {
 		super(props, id);
 	}
 
-   getProps(): TaskLabelProps {
+   getProps(): GroupProps {
       throw new Error('Method not implemented.');
    }
 }

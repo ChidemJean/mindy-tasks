@@ -15,6 +15,12 @@ export type Props = {
 const ResultBoxRoot = styled("div", {
    display: 'flex',
    width: '100%',
+   backgroundColor: 'rgba(255,255,255, 0.1)',
+   padding: '15px',
+   borderRadius: 4,
+   marginBottom: '15px',
+   boxShadow: `0 0 0 0px rgba(0,0,0,0.8)`,
+	'&:focus': { boxShadow: `0 0 0 2px rgba(255,255,255, 0.1)` },
 });
 
 const ResultBoxTitle = styled("h1", {

@@ -6,13 +6,11 @@ const ResultsArea = styled('div', {
 	display: 'flex',
    flexDirection: 'column',
 	width: '100%',
-	padding: '15px',
+	padding: '0',
 	zIndex: 1,
 	color: 'white',
 	userSelect: 'none',
-	borderRadius: 4,
-	backgroundColor: 'red',//'rgba(0,0,0,0.98)',
-	boxShadow: `0 0 0 0px rgba(0,0,0,1)`,
+	backgroundColor: 'transparent',
 	variants: {
 		state: {
 			open: { transform: 'translateY(0)', transition: '.4s', opacity: 1 },
