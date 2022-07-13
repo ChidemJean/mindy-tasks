@@ -1,10 +1,16 @@
-import { Repository } from "typeorm";
+import { inject, injectable } from "tsyringe";
+import { DataSource, Repository } from "typeorm";
 import { UpdateResult } from "typeorm/query-builder/result/UpdateResult";
 import { User } from "../../domain/entities/user.entity";
 import { UserRepositoryInterface } from "../../domain/repositories/user.repository";
 
+@injectable()
 export class UserTypeOrmRepository implements UserRepositoryInterface {
-   constructor(private ormRepo: Repository<User>) { }
+   private ormRepo: Repository<User>
+
+   constructor(@inject('appDataSource') private dataSource: DataSource) {
+      this.ormRepo = dataSource.getRepository(User);
+   }
 
    async update(id: string, user: User): Promise<boolean> {
 

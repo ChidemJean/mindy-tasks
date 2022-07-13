@@ -6,7 +6,7 @@ import { TaskSchema } from "./models/task.entity";
 
 export const defaultStorageFolder = app.getPath('downloads');
 
-const AppDataSource = new DataSource({
+export const AppDataSource = new DataSource({
     type: "sqlite",
     synchronize: true,
     logging: true,

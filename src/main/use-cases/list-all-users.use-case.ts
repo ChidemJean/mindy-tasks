@@ -1,7 +1,9 @@
+import { inject, injectable } from 'tsyringe';
 import { UserRepositoryInterface } from '../domain/repositories/user.repository';
 
+@injectable()
 export class ListAllUsersUseCase {
-  constructor(private userRepo: UserRepositoryInterface) {}
+  constructor(@inject('UserRepositoryInterface') private userRepo: UserRepositoryInterface) {}
 
   async execute(): Promise<ListUserOutput> {
     const users = await this.userRepo.findAll();

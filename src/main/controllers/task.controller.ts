@@ -1,4 +1,5 @@
 import { ipcMain, IpcMain } from "electron";
+import { container } from "tsyringe";
 import AppDataSource from "../database";
 import { TaskTypeOrmRepository } from "../database/repositories/task.repository";
 import { Task } from "../domain/entities/task.entity";
@@ -9,18 +10,20 @@ export const getTasksChannel = "get/tasks";
 export const createTaskChannel = "create/task";
 export const searchTaskChannel = "search/task";
 
-export const repository = new TaskTypeOrmRepository(AppDataSource.getRepository(Task));
-// export const listAll = new ListAllTasksUseCase(repository);
-export const create = new CreateTaskUseCase(repository);
-export const search = new SearchTasksUseCase(repository);
+// export const repository = new TaskTypeOrmRepository(AppDataSource.getRepository(Task));
+// // export const listAll = new ListAllTasksUseCase(repository);
+// export const create = new CreateTaskUseCase(repository);
+// export const search = new SearchTasksUseCase(repository);
 
 export function TasksController() {
 
    ipcMain.handle(searchTaskChannel, async (event, args) => {
+      const search = container.resolve(SearchTasksUseCase);
       return await search.execute(args[0]);
    });
 
    ipcMain.handle(createTaskChannel, async (event, args) => {
+      const create = container.resolve(CreateTaskUseCase);
       return await create.execute(args[0]);
    });
 

@@ -1,10 +1,16 @@
-import { Repository } from "typeorm";
+import { inject, injectable } from "tsyringe";
+import { DataSource, Repository } from "typeorm";
 import { UpdateResult } from "typeorm/query-builder/result/UpdateResult";
 import { Task } from "../../domain/entities/task.entity";
 import { TaskRepositoryInterface } from "../../domain/repositories/task.repository";
 
+@injectable()
 export class TaskTypeOrmRepository implements TaskRepositoryInterface {
-   constructor(private ormRepo: Repository<Task>) { }
+   private ormRepo: Repository<Task>
+
+   constructor(@inject('appDataSource') private dataSource: DataSource) {
+      this.ormRepo = dataSource.getRepository(Task);
+   }
    
    update(id: string, Task: Task): Promise<boolean> {
       throw new Error("Method not implemented.");

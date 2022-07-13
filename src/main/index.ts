@@ -1,13 +1,14 @@
 import { App, app, BrowserWindow, globalShortcut, ipcMain, Menu, nativeImage, screen, Tray } from 'electron';
 import { join } from 'path';
-import url from 'url';
 import 'reflect-metadata'; // Required by TypoORM.
-import { UsersController } from './controllers/user.controller';
 
 import createTray from './windows/main.window';
 import createSearchWindow from './windows/search.window';
 import createWindow from './windows/app.window';
+
 import { TasksController } from './controllers/task.controller';
+import { UsersController } from './controllers/user.controller';
+import "./di";
 
 export const isDev: boolean = !app.isPackaged;
 
