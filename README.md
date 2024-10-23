@@ -1,4 +1,6 @@
-# About
+# MindyTasks
+
+Aplicativo desktop semelhante a barra de pesquisa do mac para gerenciar tarefas rapidamente.
 
 ### Stack contains:
 
